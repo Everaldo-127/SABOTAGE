@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SABOTAGE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ff6600;
+      --bg-dark: rgba(0,0,0,0.85);
+      --bg-box: rgba(0,0,0,0.7);
+      --header-bg: rgba(0,0,0,0.6);
+      --header-bg-hover: linear-gradient(to left, rgba(255,255,255,0.3), rgba(0,0,0,0.6));
+      --footer-bg: linear-gradient(to right, #000, #222, #000);
+      --font: 'Orbitron', sans-serif;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      width: 100%;
+      font-family: var(--font);
+      color: #fff;
+      background: url('IMAGENS/sabotagefundo.jpg') center/cover no-repeat fixed;
+      box-sizing: border-box;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .rap-header {
+      width: 100%;
+      background: var(--header-bg);
+      color: #fff;
+      text-align: center;
+      padding: 1.1cm 0.5rem 2.5rem 0.5rem; /* padding-bottom aumentado em 0.5cm */
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start; /* alinha ao topo */
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: background 0.3s;
+      min-height: 180px; /* altura aumentada em 1cm (aprox. 60px) */
+    }
+    .rap-header:hover {
+      background: var(--header-bg-hover);
+    }
+    .header-icons {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      margin-bottom: 0.2rem;
+    }
+    .header-icon {
+      width: 48px;
+      height: 48px;
+      object-fit: cover;
+      background: transparent;
+    }
+    .rap-header h1 {
+      margin: 0.2rem 0 0 0;
+      font-size: clamp(2rem, 7vw, 4rem);
+      letter-spacing: 0.1em;
+      z-index: 2;
+      cursor: pointer;
+      text-shadow: 2px 2px 8px #000;
+    }
+    .rap-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      margin: 0.2rem 0 0 0;
+      text-align: center;
+      width: 100%;
+      text-shadow: 1px 1px 4px #000;
+    }
+    .header-icons {
+      display: none;
+    }
+    
+    .box {
+      min-width: 500px;
+      max-width: calc(900px + 15cm);
+      width: 100%;
+      flex: 1 1 700px;
+      margin-bottom: 1rem;
+      background: var(--bg-box);
+      border: 2px solid #555;
+      border-radius: 10px;
+      padding: 1.5rem 1.2rem;
+      box-sizing: border-box;
+      position: relative;
+      margin: 2cm auto 0 auto; /* desce o elemento em 2cm (subiu 1cm) */
+      transition: max-height 0.4s cubic-bezier(.4,0,.2,1);
+      cursor: pointer;
+      /* Removido max-height e overflow para permitir expansão total */
+      display: flex;
+      flex-direction: column;
+      left: 4.8cm; /* movido 0,5cm para a esquerda */
+      min-height: calc(100% + 6cm); /* altura aumentada em 3cm */
+    } 
+    .box > * {
+      max-height: none !important;
+      overflow: visible !important;
+    }
+    .box details,
+    .box details[open] {
+      max-height: none !important;
+      overflow: visible !important;
+      padding-right: 0 !important;
+    }
+    .box details {
+      flex-shrink: 0;
+      overflow: visible;
+      max-height: none;
+    }
+    .box details[open] {
+      max-height: none;
+      overflow: visible;
+    }
+    .box details {
+      max-height: 250px;
+      overflow-y: auto;
+      overflow-x: auto;
+      padding-right: 0.5rem;
+    }
+    .box details[open] {
+      max-height: 250px;
+      overflow-y: auto;
+      overflow-x: auto;
+      padding-right: 0.5rem;
+    }
+    .box.expanded {
+      max-height: 80vh;
+      overflow-y: auto;
+      overflow-x: auto;
+      cursor: default;
+    }
+    .box details[open] {
+      max-height: 250px;
+      overflow-y: auto;
+      overflow-x: auto;
+      padding-right: 0.5rem;
+    }
+    details, .sidebar details {
+      max-height: 250px; /* limite de altura para cada menu */
+      overflow-y: auto;  /* barra de rolagem individual */
+      padding-right: 0.5rem; /* espaço para barra de rolagem */
+    }
+    .box h2 {
+      font-size: 1.3rem;
+      margin-top: 0;
+      color: var(--primary);
+    }
+    .box details {
+      max-height: 250px;
+      overflow-y: auto;
+      overflow-x: auto;
+      padding-right: 0.5rem;
+    }
+    .box details > p {
+      white-space: pre-line;
+      overflow-x: auto;
+    }
+    details {
+      margin-bottom: 0.7rem;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #181818;
+      border: 1px solid #333;
+      transition: box-shadow 0.2s;
+    }
+    summary {
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      background: #222;
+      padding: 0.7rem 1rem;
+      border: none;
+      outline: none;
+      color: #fff;
+      transition: background 0.2s, color 0.2s;
+    }
+    details[open] summary {
+      background: #333;
+      color: var(--primary);
+    }
+    .sidebar {
+      background: rgba(0,0,0,0.7); /* semi-transparente */
+      padding: 1rem 0.7rem;
+      border-radius: 0px;
+      max-width: 350px;
+      min-width: 220px;
+      width: 100%;
+      box-sizing: border-box;
+      position: fixed;
+      top: calc(180px + 5mm); /* altura do header + 5mm (desceu 1mm) */
+      left: 0;
+      z-index: 200;
+      /* Calcula altura disponível entre header e footer */
+      height: calc(100vh - 180px - 56px); /* 180px(header) + 56px(footer) */
+      max-height: none;
+      overflow-y: auto;
+      margin: 0;
+      align-self: flex-start;
+      right: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: 2px 0 12px rgba(0,0,0,0.4);
+      border: 1.5px solid #222;
+      transition: box-shadow 0.2s, border 0.2s;
+      order: initial;
+    }
+    .sidebar h2 {
+      font-size: 1.2rem;
+      margin: 0 0 1rem 0;
+      color: var(--primary);
+      text-align: center;
+      letter-spacing: 0.08em;
+    }
+    .sidebar-content {
+      overflow-y: auto;
+      max-height: 60vh;
+    }
+    .sidebar details {
+      margin-bottom: 1rem;
+      background: #111;
+      border: 1px solid #222;
+    }
+    .sidebar summary {
+      font-size: 1.05rem;
+      background: #111;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .sidebar summary:hover {
+      background: var(--primary);
+      color: #000;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding-left: 1.2rem;
+      margin: 0.5rem 0 0 0;
+    }
+    .sidebar li {
+      padding: 0.2rem 0;
+      font-size: 0.97rem;
+      word-break: break-word;
+    }
+    .sidebar a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: color 0.2s;
+      word-break: break-word;
+    }
+    .sidebar a:hover {
+      color: #fff;
+      text-decoration: underline;
+    }
+    .footer {
+      background: var(--footer-bg);
+      color: var(--primary);
+      text-align: center;
+      width: 100%;
+      min-height: 48px;
+      font-family: var(--font);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+      margin-top: auto;
+      padding: 0.5rem 1rem;
+      box-sizing: border-box;
+    }
+    .footer p {
+      margin: 0;
+      width: 100%;
+      text-align: center;
+    }
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 1100px) {
+      main {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+        padding-top: 2.5rem;
+      }
+      .sidebar {
+        margin-left: 0;
+        margin-top: 0.5rem;
+        max-width: 100%;
+      }
+    }
+    @media (max-width: 800px) {
+      .rap-header h1 {
+        font-size: clamp(1.5rem, 8vw, 2.5rem);
+      }
+      main {
+        padding: 1.5rem 0.5rem 1rem 0.5rem;
+      }
+      .box {
+        max-width: 100%;
+        min-width: 0;
+      }
+      .sidebar {
+        max-width: 100%;
+        min-width: 0;
+      }
+      .sidebar-content {
+        max-height: 40vh;
+      }
+    }
+    @media (max-width: 600px) {
+      .rap-header {
+        padding: 0.7rem 0.2rem 0.2rem 0.2rem;
+      }
+      .header-icon {
+        width: 32px;
+        height: 32px;
+      }
+      .rap-header h1 {
+        font-size: clamp(1.2rem, 10vw, 2rem);
+      }
+      .rap-subtitle {
+        font-size: clamp(0.9rem, 3vw, 1.1rem);
+      }
+      main {
+        gap: 0.7rem;
+        padding: 1rem 0.2rem 0.7rem 0.2rem;
+      }
+      .box, .sidebar {
+        padding: 0.7rem 0.4rem;
+        font-size: 0.97rem;
+      }
+      .sidebar-content {
+        max-height: 30vh;
+      }
+    }
+    @media (max-width: 400px) {
+      .rap-header h1 {
+        font-size: 1.1rem;
+      }
+      .rap-subtitle {
+        font-size: 0.8rem;
+      }
+      .header-icon {
+        width: 24px;
+        height: 24px;
+      }
+      .footer {
+        font-size: 0.8rem;
+        padding: 0.3rem 0.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="rap-header">
+    <div class="header-icons">
+      <img src="IMAGENS/micro001.jpg" alt="Microfone" class="header-icon" />
+      <img src="IMAGENS/micro001.jpg" alt="Microfone" class="header-icon" style="visibility:hidden;" />
+    </div>
+    <h1>SABOTAGE</h1>
+    <p class="rap-subtitle">RAP é COMPROMISSO, não é viagem !</p>
+  </header>
+  <main>
+    
+    <div class="box" style="margin-left:auto; margin-right:auto;">      
+      <h2 style="text-align:center;">APRESENTAÇÃO</h2>
+      <details>
+      <summary>Sabotage – A Voz do Canão</summary>
+      <p style="text-align:center;">Mauro Mateus dos Santos, o Sabotage, nasceu em 3 de abril de 1973, no bairro do Canão (Brooklin, SP). Cresceu em meio a adversidades sociais, marcado pela violência e pelo tráfico. Passou pela prisão, mas ao sair, decidiu transformar sua realidade por meio do rap, unindo lírica forte e crítica social. Em 2000, lançou “Rap É Compromisso!”, disco divisor de águas no hip-hop brasileiro. O álbum trouxe clássicos como "Respeito é Pra Quem Tem", "Um Bom Lugar" e "Na Zona Sul". Atuou nos filmes “O Invasor” e “Carandiru”, estreitando os laços entre rap e cinema. Trabalhou com artistas como Instituto, Sepultura, RZO, e Rappin’ Hood, mostrando versatilidade. Sabotage foi assassinado em 24 de janeiro de 2003, aos 29 anos, crime não solucionado. Em 2016, sua família lançou o álbum póstumo “Sabotage”, com faixas inéditas. Em 2020, foi lançado o EP “O Invasor”, com reinterpretações e registros raros. Sua discografia oficial soma 30 músicas lançadas, entre álbuns, EPs e colaborações. É referência máxima no rap nacional, símbolo de resistência e autenticidade. Sua trajetória foi tema do documentário “Sabotage: Maestro do Canão” e de livros sobre sua vida. Sabotage permanece como um ícone atemporal da cultura periférica. Seu legado segue vivo em cada verso, cada beat e em toda uma geração de artistas.</p>
+      </details>
+      <h2 style="text-align:center;">ÁLBUNS ( Histórias )</h2>
+      <details>
+      <summary>Rap É Compromisso! (2000)</summary>
+      <p style="text-align:center;">Lançado em 2000, "Rap É Compromisso!" é o único álbum de estúdio lançado em vida por Sabotage. Produzido por Tejo Damasceno, Daniel Ganjaman, Zegon e DJ Cia, o disco foi lançado pelo selo Cosa Nostra, ligado aos Racionais MC's. O álbum levou cerca de oito meses para ser finalizado e contou com participações de Negra Li, Black Alien, Rappin' Hood, RZO, entre outros. As letras abordam temas como a realidade das periferias, crítica social e superação. Com mais de 1,7 milhão de cópias vendidas, o álbum foi certificado como triplo diamante pela ABPD. É considerado um marco na história do rap nacional, influenciando uma geração de artistas e fãs do gênero. A faixa "Um Bom Lugar" tornou-se um hino, destacando-se pela sua mensagem de esperança e resiliência. O álbum também inclui "Respeito é Pra Quem Tem" e "Cocaína", que reforçam o compromisso do rapper com a realidade das ruas. A capa do disco apresenta uma imagem marcante de Sabotage, refletindo a seriedade de seu conteúdo. O sucesso do álbum consolidou Sabotage como uma das vozes mais autênticas do rap brasileiro. Sua influência perdura, sendo lembrado como o "Maestro do Canão". O álbum foi relançado em vinil duplo, reafirmando seu status de clássico. Sabotage participou de filmes como "O Invasor", ampliando seu alcance artístico. Sua trajetória é celebrada em biografias e documentários, mantendo viva sua memória. "Rap É Compromisso!" permanece relevante, sendo estudado e apreciado por novas gerações. O álbum é uma obra-prima que transcende o tempo, consolidando o legado de Sabotage no cenário musical brasileiro.</p>
+      </details>
+      <details>
+      <summary>Uma Luz Que Nunca Irá Se Apagar (2002)</summary>
+      <p style="text-align:center;">"Uma Luz Que Nunca Irá Se Apagar" é uma coletânea lançada em 2002, reunindo faixas de Sabotage com diversas participações especiais. O álbum inclui 18 faixas, entre elas "Mun-Rá", "Dorobo" e "Dama Tereza", mostrando a versatilidade do rapper. Produzido pelo Instituto, o disco apresenta colaborações com artistas como BNegão, Família RZO e Sepultura. As músicas abordam temas como resistência, crítica social e a vida nas periferias. A faixa "Black Steel In The Hour of Chaos", com Sepultura, destaca a fusão entre rap e metal. "O Invasor" e "Aracnídeo" são outras faixas que evidenciam a criatividade de Sabotage. O álbum serve como uma homenagem póstuma, mantendo viva a memória do artista. A coletânea reforça o impacto de Sabotage no cenário musical brasileiro. Sua capacidade de transitar entre diferentes estilos musicais é evidenciada neste trabalho. "Uma Luz Que Nunca Irá Se Apagar" é uma celebração da arte e legado de Sabotage. O álbum está disponível em plataformas digitais, alcançando novas audiências. A coletânea é um testemunho da influência duradoura do rapper. Sua música continua a inspirar e emocionar ouvintes em todo o país. O disco é uma peça fundamental para compreender a trajetória de Sabotage. "Uma Luz Que Nunca Irá Se Apagar" é um tributo à luz que o rapper representou para muitos. O álbum solidifica a posição de Sabotage como um ícone do rap nacional. </p>
+      </details>
+      <details>
+      <summary>Rap É o Hino Que Me Tem Vivo (2008)</summary>
+      <p style="text-align:center;">Lançado em 2008, "Rap É o Hino Que Me Tem Vivo" é uma coletânea póstuma que reúne faixas inéditas e remixes de Sabotage. O álbum destaca a importância do rap na vida do artista, funcionando como um hino pessoal. Com participações de Instituto, Attack Versus e outros, o disco apresenta uma variedade de colaborações. As faixas abordam temas como a realidade urbana, desafios sociais e a força do rap como expressão. "Rap Nacional 2000" e "Cabeça de Nêgo (Remix)" são destaques que evidenciam a habilidade lírica de Sabotage. A produção do álbum mantém a essência do rapper, com beats marcantes e letras contundentes. "Rap É o Hino Que Me Tem Vivo" serve como uma ponte entre o legado de Sabotage e as novas gerações. O álbum reforça a influência duradoura do artista no cenário do rap brasileiro. Disponível em plataformas digitais, o disco continua a impactar ouvintes. A coletânea é uma prova da relevância contínua de Sabotage na música nacional. Suas letras permanecem atuais, refletindo questões sociais ainda presentes. "Rap É o Hino Que Me Tem Vivo" é uma celebração da vida e obra de Sabotage. O álbum destaca a importância do rap como ferramenta de transformação social. A coletânea é um testemunho do compromisso do rapper com sua arte. "Rap É o Hino Que Me Tem Vivo" solidifica o status de Sabotage como uma lenda do rap brasileiro. O álbum é uma peça essencial para compreender a profundidade e impacto de sua música.</p>
+      </details>
+      <details>
+      <summary>Sabotage (2016)</summary>
+      <p style="text-align:center;">Lançado em 2016, o álbum póstumo "Sabotage" reúne gravações inéditas do rapper, finalizadas por produtores e artistas que trabalharam com ele em vida. O projeto foi liderado por Daniel Ganjaman, Tejo Damasceno e Rica Amabis, com participações de Dexter, Rappin' Hood, BNegão, Céu e membros da RZO. As faixas, como "Mosquito", "Superar" e "Canão Foi Tão Bom", exploram temas como superação, realidade das periferias e crítica social. A produção do álbum mantém a autenticidade de Sabotage, com beats envolventes e letras impactantes. "Sabotage" foi aclamado pela crítica, sendo eleito o 2º melhor disco brasileiro de 2016 pela Rolling Stone Brasil. O álbum reforça o legado do rapper, apresentando sua arte a novas audiências. Disponível em plataformas digitais, o disco continua a influenciar o cenário do rap nacional. "Sabotage" é uma homenagem à genialidade e contribuição do artista para a música brasileira. O álbum destaca a importância de preservar e celebrar a obra de Sabotage. Sua música permanece relevante, abordando questões sociais ainda presentes. "Sabotage" é um testemunho da visão artística e compromisso do rapper com sua comunidade. O álbum solidifica a posição de Sabotage como um dos maiores nomes do rap brasileiro. Sua influência transcende gerações, inspirando artistas e ouvintes. "Sabotage" é uma obra essencial para compreender a profundidade de sua música. O álbum é uma celebração da vida e legado de Sabotage. "Sabotage" reafirma a importância do rapper na história da música brasileira.</p>
+      </details>
+      <details>
+      <summary>O Invasor (2020 - EP)</summary>
+      <p style="text-align:center;">Lançado em 2020, o EP "O Invasor" reúne faixas de Sabotage que fizeram parte da trilha sonora do filme homônimo de 2002, dirigido por Beto Brant. O projeto inclui músicas como "O Invasor", "Aracnídeo" e "Dama Tereza", além de versões instrumentais e remixes. Embora as faixas não sejam inéditas, o EP serve para relembrar e celebrar a contribuição de Sabotage para o cinema e a música brasileira. A faixa-título destaca-se por sua intensidade e conexão com a narrativa do filme. "Aracnídeo" e "Dama Tereza" evidenciam a versatilidade e profundidade lírica do rapper. O EP foi lançado pelo Instituto, coletivo que trabalhou com Sabotage em diversos projetos. Disponível em plataformas digitais, o EP alcança novas audiências, mantendo viva a memória do artista. "O Invasor" reforça a importância de Sabotage como um artista multifacetado. Sua contribuição para a trilha sonora do filme é um exemplo de sua capacidade de transitar entre diferentes formas de arte. O EP é uma homenagem à influência</p>
+      </details>
+    </div>
+    <aside class="sidebar">
+      <h2>DISCOGRAFIA</h2>
+      <div class="sidebar-content">
+        <details>
+          <summary>Rap É Compromisso (Edição Comemorativa) (2000)</summary>
+          <ul>
+            <li><a href="https://music.apple.com/br/album/introdu%C3%A7%C3%A3o/1510761195?i=1510761196">Sabotage - Introdução</a></li>
+            <li><a href="https://music.apple.com/br/album/rap-%C3%A9-compromisso-feat-negra-li/1510761195?i=1510761199">Sabotage - Rap É Compromisso (feat. Negra Li)</a></li>
+            <li><a href="https://music.apple.com/br/album/um-bom-lugar-feat-black-alien/1510761195?i=1510761200">Sabotage - Um Bom Lugar (feat. Black Alien)</a></li>
+            <li><a href="https://music.apple.com/br/album/no-brooklin-feat-negra-li/1510761195?i=1510761201">Sabotage - No Brooklin (feat. Negra Li)</a></li>
+            <li><a href="https://music.apple.com/br/album/coca%C3%ADna-feat-sombra-bastardo/1510761195?i=1510761202">Sabotage - Cocaína (feat. Sombra & Bastardo)</a></li>
+            <li><a href="https://music.apple.com/br/album/na-zona-sul-feat-heli%C3%A3o-casc%C3%A3o-dj-cia/1510761195?i=1510761203">Sabotage - Na Zona Sul (feat. Helião, Cascão & DJ Cia)</a></li>
+            <li><a href="https://music.apple.com/br/album/a-cultura-feat-rappin-hood-heli%C3%A3o/1510761195?i=1510761204">Sabotage - A Cultura (feat. Rappin' Hood & Helião)</a></li>
+            <li><a href="https://music.apple.com/br/album/incentivando-o-som-feat-sandr%C3%A3o/1510761195?i=1510761205">Sabotage - Incentivando o Som (feat. Sandrão)</a></li>
+            <li><a href="https://music.apple.com/br/album/respeito-%C3%A9-pra-quem-tem/1510761195?i=1510761206">Sabotage - Respeito É pra Quem Tem</a></li>
+            <li><a href="https://music.apple.com/br/album/pa%C3%ADs-da-fome/1510761195?i=1510761207">Sabotage - País da Fome</a></li>
+            <li><a href="https://music.apple.com/br/album/cantando-pro-santo-feat-chor%C3%A3o/1510761195?i=1510761208">Sabotage - Cantando pro Santo (feat. Chorão)</a></li>
+            <li><a href="https://music.apple.com/br/album/rap-%C3%A9-compromisso-instrumental/1510761195?i=1510761209">Sabotage - Rap É Compromisso (Instrumental)</a></li>
+            <li><a href="https://music.apple.com/br/album/um-bom-lugar-instrumental/1510761195?i=1510761210">Sabotage - Um Bom Lugar (Instrumental)</a></li>
+          </ul>
+        </details>
+        <details>
+          <summary>Sabotage (2016)</summary>
+          <ul>
+            <li><a href="https://music.apple.com/br/album/can%C3%A3o-foi-t%C3%A3o-bom-feat-negra-li-lakers-dbs-gord%C3%A3o-chefe-instituto-ganjaman/1510762858?i=1510762859">Sabotage - Canão Foi Tão Bom (feat. Negra Li, Lakers, DBS Gordão Chefe, Instituto & Ganjaman)</a></li>
+            <li><a href="https://music.apple.com/br/album/pa%C3%ADs-da-fome-feat-quincas-moreira/1510762858?i=1510762860">Sabotage - País da Fome (feat. Quincas Moreira)</a></li>
+            <li><a href="https://music.apple.com/br/album/respeito-%C3%A9-lei-feat-rappin-hood-potencial-3/1510762858?i=1510762861">Sabotage - Respeito É Lei (feat. Rappin' Hood & Potencial 3)</a></li>
+            <li><a href="https://music.apple.com/br/album/cabe%C3%A7a-de-nego-feat-instituto-boss-in-drama/1510762858?i=1510762862">Sabotage - Cabeça de Nego (feat. Instituto & Boss in Drama)</a></li>
+            <li><a href="https://music.apple.com/br/album/superar-feat-qap/1510762858?i=1510762863">Sabotage - Superar (feat. QAP!)</a></li>
+            <li><a href="https://music.apple.com/br/album/sai-da-frente-feat-rappin-hood/1510762858?i=1510762864">Sabotage - Sai da Frente (feat. Rappin' Hood)</a></li>
+            <li><a href="https://music.apple.com/br/album/m%C3%ADssil-feat-rappin-hood/1510762858?i=1510762865">Sabotage - Míssil (feat. Rappin' Hood)</a></li>
+            <li><a href="https://music.apple.com/br/album/maloca-%C3%A9-mar%C3%A9-feat-instituto/1510762858?i=1510762866">Sabotage - Maloca É Maré (feat. Instituto)</a></li>
+            <li><a href="https://music.apple.com/br/album/love-song-a-maior-dor-de-um-homem-feat-mano-brown/1510762858?i=1510762867">Sabotage - Love Song (A Maior Dor de um Homem) (feat. Mano Brown)</a></li>
+            <li><a href="https://music.apple.com/br/album/monstro-invis%C3%ADvel-feat-instituto/1510762858?i=1510762868">Sabotage - Monstro Invisível (feat. Instituto)</a></li>
+            <li><a href="https://music.apple.com/br/album/jogo-sujo-feat-rappin-hood/1510762858?i=1510762869">Sabotage - Jogo Sujo (feat. Rappin' Hood)</a></li>
+          </ul>
+        </details>
+        <details>
+          <summary>Originals Demo (2002) (2022)</summary>
+          <ul>
+            <li><a href="https://music.apple.com/br/album/quem-viver-ver%C3%A1-feat-tejo-damasceno-daniel-ganjaman-sapotone/1616712089?i=1616712090">Sabotage - Quem Viver Verá (feat. Tejo Damasceno, Daniel Ganjaman & Sapotone)</a></li>
+            <li><a href="https://music.apple.com/br/album/mosquito-feat-quincas-moreira/1616712089?i=1616712091">Sabotage - Mosquito (feat. Quincas Moreira)</a></li>
+            <li><a href="https://music.apple.com/br/album/pa%C3%ADs-da-fome-feat-quincas-moreira/1616712089?i=1616712092">Sabotage - País da Fome (feat. Quincas Moreira)</a></li>
+            <li><a href="https://music.apple.com/br/album/can%C3%A3o-foi-t%C3%A3o-bom-feat-daniel-ganjaman/1616712089?i=1616712093">Sabotage - Canão Foi Tão Bom (feat. Daniel Ganjaman)</a></li>
+            <li><a href="https://music.apple.com/br/album/quem-viver-ver%C3%A1-instrumental/1616712089?i=1616712094">Sabotage - Quem Viver Verá (Instrumental)</a></li>
+            <li><a href="https://music.apple.com/br/album/mosquito-instrumental/1616712089?i=1616712095">Sabotage - Mosquito (Instrumental)</a></li>
+            <li><a href="https://music.apple.com/br/album/pa%C3%ADs-da-fome-instrumental/1616712089?i=1616712096">Sabotage - País da Fome (Instrumental)</a></li>
+            <li><a href="https://music.apple.com/br/album/can%C3%A3o-foi-t%C3%A3o-bom-instrumental/1616712089?i=1616712097">Sabotage - Canão Foi Tão Bom (Instrumental)</a></li>
+          </ul>
+        </details>
+        <details>
+          <summary>Sabotage 50 (2024)</summary>
+          <ul>
+            <li><a href="https://music.apple.com/br/album/rap-%C3%A9-compromisso-feat-negra-li/1510761195?i=1510761199">Sabotage - Rap É Compromisso (feat. Negra Li)</a></li>
+            <li><a href="https://music.apple.com/mz/music-video/no-brooklin-feat-nave-sabotage-50/1740427826">Sabotage - No Brooklin (feat. Nave)</a></li>
+            <li><a href="https://music.apple.com/us/music-video/maloca-%C3%A9-mar%C3%A9-sabotage-50/1740416145">Sabotage - Maloca É Maré (feat. Instituto)</a></li>
+            <li><a href="https://music.apple.com/us/song/dama-tereza-feat-nave-sabotage-50/1737832737">Sabotage - Dama Tereza (feat. Nave)</a></li>
+            <li><a href="https://music.apple.com/br/music-video/cantando-pro-santo-feat-filipe-ret-klean-sabotage-50/1740427184">Sabotage - Cantando Pro Santo (feat. Filipe Ret & Klean)</a></li>
+          </ul>
+        </details>
+      </div>
+    </aside>
+  </main>
+  <footer class="footer">
+    <p>**** RAP É COMPROMISSO | SABOTAGE 1973-2003 | LEGADO ETERNO ****</p>
+  </footer>
+</body>
+</html>
